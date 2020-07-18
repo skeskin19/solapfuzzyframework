@@ -1,0 +1,32 @@
+2018-12-27 17:20:03,143 INFO  [mondrian.olap.MondrianProperties] Mondrian: properties loaded from 'jar:file:/E:/eclipse_neon/workspace_metu/mondrian-test/lib/geomondrian.jar!/mondrian.properties'
+2018-12-27 17:20:03,144 INFO  [mondrian.olap.MondrianProperties] Mondrian: loaded 0 system properties
+2018-12-27 17:20:03,165 INFO  [mondrian.rolap.RolapUtil] Mondrian: JDBC driver org.postgis.DriverWrapper loaded successfully
+2018-12-27 17:20:03,165 INFO  [mondrian.rolap.RolapUtil] Mondrian: JDBC driver sun.jdbc.odbc.JdbcOdbcDriver loaded successfully
+2018-12-27 17:20:03,166 WARN  [mondrian.rolap.RolapUtil] Mondrian: Warning: JDBC driver org.hsqldb.jdbcDriver not found
+2018-12-27 17:20:03,166 WARN  [mondrian.rolap.RolapUtil] Mondrian: Warning: JDBC driver oracle.jdbc.OracleDriver not found
+2018-12-27 17:20:03,166 WARN  [mondrian.rolap.RolapUtil] Mondrian: Warning: JDBC driver com.mysql.jdbc.Driver not found
+2018-12-27 17:20:03,393 INFO  [org.apache.commons.vfs.impl.DefaultFileReplicator] Using "C:\Users\SINANK~1\AppData\Local\Temp\vfs_cache" as temporary files store.
+2018-12-27 17:20:03,839 DEBUG [mondrian.sql] 0: SqlTupleReader.readTuples [[Station.StationHierarchy].[Station Region]]: executing sql [select "tr_region"."region_name" as "c0", "tr_region"."geom" as "c1" from "public"."meteorological_station2" as "meteorological_station2", "public"."tr_city" as "tr_city", "public"."tr_region" as "tr_region" where "tr_city"."region_id" = "tr_region"."id" and "meteorological_station2"."city_id" = "tr_city"."gid" group by "tr_region"."region_name", "tr_region"."geom" order by "tr_region"."region_name" ASC]
+2018-12-27 17:20:04,203 DEBUG [mondrian.sql] 0: , exec 364 ms
+2018-12-27 17:20:05,971 DEBUG [mondrian.sql] 0: , exec+fetch 2132 ms, 7 rows
+2018-12-27 17:20:05,974 DEBUG [mondrian.sql] 1: SqlMemberSource.getMemberChildren: executing sql [select "tr_region"."region_name" as "c0", "tr_region"."geom" as "c1" from "public"."meteorological_station2" as "meteorological_station2", "public"."tr_city" as "tr_city", "public"."tr_region" as "tr_region" where "tr_city"."region_id" = "tr_region"."id" and "meteorological_station2"."city_id" = "tr_city"."gid" and UPPER("tr_region"."region_name") = UPPER('DateDimension1.Date Hierarchy 0') group by "tr_region"."region_name", "tr_region"."geom" order by "tr_region"."region_name" ASC]
+2018-12-27 17:20:05,975 DEBUG [mondrian.sql] 1: , exec 1 ms
+2018-12-27 17:20:05,975 DEBUG [mondrian.sql] 1: , exec+fetch 1 ms, 0 rows
+2018-12-27 17:20:05,975 DEBUG [mondrian.sql] 2: SqlMemberSource.getMemberChildren: executing sql [select "met_data_station_view"."year" as "c0" from "public"."met_data_station_view" as "met_data_station_view" where "met_data_station_view"."year" = 2016 group by "met_data_station_view"."year" order by "met_data_station_view"."year" ASC]
+2018-12-27 17:20:08,202 DEBUG [mondrian.sql] 2: , exec 2227 ms
+2018-12-27 17:20:08,203 DEBUG [mondrian.sql] 2: , exec+fetch 2228 ms, 1 rows
+2018-12-27 17:20:08,237 DEBUG [mondrian.mdx] 0: select {[Measures].[Tempature_avg], [Measures].[actual_pressure_avg], [Measures].[relative_humidity_avg]} ON COLUMNS,
+  Filter({[Station.StationHierarchy].[Station City].Members}, ST_Within([Station].CurrentMember.Properties("geom"), [Station.StationHierarchy].[All Stations].[MARMARA REGION].Properties("geom"))) ON ROWS
+from [MeteorologicalCube]
+where [DateDimension1.Date Hierarchy 0].[All Dates].[2016]
+
+2018-12-27 17:20:08,243 DEBUG [mondrian.sql] 3: SqlTupleReader.readTuples [[Station.StationHierarchy].[Station City]]: executing sql [select "tr_region"."region_name" as "c0", "tr_region"."geom" as "c1", "tr_city"."name_1" as "c2", "tr_city"."geom" as "c3" from "public"."meteorological_station2" as "meteorological_station2", "public"."tr_city" as "tr_city", "public"."tr_region" as "tr_region" where "tr_city"."region_id" = "tr_region"."id" and "meteorological_station2"."city_id" = "tr_city"."gid" group by "tr_region"."region_name", "tr_region"."geom", "tr_city"."name_1", "tr_city"."geom" order by "tr_region"."region_name" ASC, "tr_city"."name_1" ASC]
+2018-12-27 17:20:08,793 DEBUG [mondrian.sql] 3: , exec 550 ms
+2018-12-27 17:20:09,755 DEBUG [mondrian.sql] 3: , exec+fetch 1512 ms, 22 rows
+2018-12-27 17:20:11,928 DEBUG [mondrian.sql] 4: RolapStar.Column.getCardinality: executing sql [select count(distinct "tr_city"."name_1") as "c0" from "public"."tr_city" as "tr_city"]
+2018-12-27 17:20:11,929 DEBUG [mondrian.sql] 4: , exec 1 ms
+2018-12-27 17:20:11,929 DEBUG [mondrian.sql] 4: , exec+fetch 1 ms, 1 rows
+2018-12-27 17:20:11,937 DEBUG [mondrian.sql] 5: Segment.load: executing sql [select "tr_city"."name_1" as "c0", "met_data_station_view"."year" as "c1", avg("met_data_station_view"."temperature") as "m0", avg("met_data_station_view"."actual_pressure") as "m1", avg("met_data_station_view"."relative_humidity") as "m2" from "public"."tr_city" as "tr_city", "public"."meteorological_station2" as "meteorological_station2", "public"."met_data_station_view" as "met_data_station_view" where "met_data_station_view"."station_id" = "meteorological_station2"."id" and "meteorological_station2"."city_id" = "tr_city"."gid" and "tr_city"."name_1" in ('Edirne', 'Istanbul', 'Çanakkale') and "met_data_station_view"."year" = 2016 group by "tr_city"."name_1", "met_data_station_view"."year"]
+2018-12-27 17:20:13,918 DEBUG [mondrian.sql] 5: , exec 1981 ms
+2018-12-27 17:20:13,920 DEBUG [mondrian.sql] 5: , exec+fetch 1983 ms, 3 rows
+2018-12-27 17:20:13,922 DEBUG [mondrian.mdx] 0: exec: 5685 ms

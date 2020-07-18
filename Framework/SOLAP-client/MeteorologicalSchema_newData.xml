@@ -1,0 +1,61 @@
+<Schema name="MeteorologicalSchema">
+  <Cube name="MeteorologicalCube" cache="true" enabled="true">
+    <Table name="met_data_station_view" schema="public">
+    </Table>
+    <Dimension type="StandardDimension" foreignKey="station_id" name="Station">
+      <Hierarchy name="StationHierarchy" hasAll="true" allMemberName="All Stations" primaryKey="id" primaryKeyTable="meteorological_station2">
+        <Join leftKey="city_id" rightAlias="tr_city" rightKey="gid">
+          <Table name="meteorological_station2" schema="public">
+          </Table>
+          <Join leftKey="region_id" rightKey="id">
+            <Table name="tr_city" schema="public">
+            </Table>
+            <Table name="tr_region" schema="public">
+            </Table>
+          </Join>
+        </Join>
+        <Level name="Station Region" table="tr_region" column="region_name" type="String" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
+          <Property name="geom" column="geom" type="Geometry">
+          </Property>
+        </Level>
+        <Level name="Station City" table="tr_city" column="name_1" type="String" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
+          <Property name="geom" column="geom" type="Geometry">
+          </Property>
+        </Level>
+        <Level name="Station Name" table="meteorological_station2" column="station_name" type="String" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
+          <Property name="station_latitude" column="latitude" type="Numeric">
+          </Property>
+          <Property name="station_longitude" column="longitude" type="Numeric">
+          </Property>
+          <Property name="geom" column="geom" type="Geometry">
+          </Property>
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <Dimension type="StandardDimension" foreignKey="year" name="DateDimension1">
+      <Hierarchy name="Date Hierarchy 0" hasAll="true" allMemberName="All Dates">
+        <Table name="met_data_station_view" schema="public">
+        </Table>
+        <Level name="Date Level 0" column="year" type="Integer" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
+        </Level>
+        <Level name="Date Level 1" column="month" type="Integer" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
+        </Level>
+        <Level name="Date Level 2" column="day" type="Integer" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
+        </Level>
+      </Hierarchy>
+    </Dimension>
+     <Measure name="Tempature_avg" column="temperature" datatype="Numeric" formatString="####.###" aggregator="avg" visible="true"></Measure>
+	 <Measure name="actual_pressure_avg" column="actual_pressure" datatype="Numeric" formatString="####.###" aggregator="avg" visible="true"></Measure>
+	 <Measure name="cloudiness_avg" column="cloudiness" datatype="Numeric" formatString="####.###" aggregator="avg" visible="true"></Measure>
+	 <Measure name="manual_rainfall_avg" column="manual_rainfall" datatype="Numeric" formatString="####.###" aggregator="avg" visible="true"></Measure>
+	 <Measure name="omgi_rainfall_avg" column="omgi_rainfall" datatype="Numeric" formatString="####.###" aggregator="avg" visible="true"></Measure>
+	 <Measure name="relative_humidity_avg" column="relative_humidity" datatype="Numeric" formatString="####.###" aggregator="avg" visible="true"></Measure>
+	 <Measure name="sunshine_hour_avg" column="sunshine_hour" datatype="Numeric" formatString="####.###" aggregator="avg" visible="true"></Measure>
+	 <Measure name="pressure_avg" column="pressure" datatype="Numeric" formatString="####.###" aggregator="avg" visible="true"></Measure>
+	 <Measure name="wind_speed_avg" column="wind_speed" datatype="Numeric" formatString="####.###" aggregator="avg" visible="true"></Measure>
+	 <Measure name="wind_speed2_avg" column="wind_speed2" datatype="Numeric" formatString="####.###" aggregator="avg" visible="true"></Measure>
+	 <Measure name="total_sunshine" column="sunshine_hour" aggregator="sum" formatString="####.###"/>
+	 <Measure name="total_tempature" column="temperature" aggregator="sum" formatString="####.###"/>
+	 
+  </Cube>
+</Schema>

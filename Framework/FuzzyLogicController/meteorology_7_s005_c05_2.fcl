@@ -1,0 +1,554 @@
+FUNCTION_BLOCK meteorology
+
+VAR_INPUT
+	actual_pressure_in : REAL;
+	cloudiness_in : REAL;
+	rainfall_in : REAL;
+	relative_humidity_in : REAL;
+	sunshine_hour_in : REAL;
+	temperature_in : REAL;
+	vapor_pressure_in : REAL;
+	wind_speed_in : REAL;
+END_VAR
+
+VAR_OUTPUT
+	actual_pressure_out : REAL;
+	cloudiness_out : REAL;
+	rainfall_out : REAL;
+	relative_humidity_out : REAL;
+	sunshine_hour_out : REAL;
+	temperature_out : REAL;
+	vapor_pressure_out : REAL;
+	wind_speed_out : REAL;
+END_VAR
+
+
+FUZZIFY actual_pressure_in
+	TERM low_in := (939.4298687621078, 0)  (941.7944788812354, 1)  (944.1590890003629, 0);
+	TERM normal_in := (941.7944788812354, 0)  (944.1590890003629, 1)  (946.6405590646601, 0);
+	TERM high_in := (944.1590890003629, 0)  (946.6405590646601, 1)  (948.858224699431, 0);
+	TERM very_high_in := (946.6405590646601, 0)  (948.858224699431, 1)  (951.075890334202, 0);
+END_FUZZIFY
+
+DEFUZZIFY actual_pressure_out
+	TERM low_out := (939.4298687621078, 0)  (941.7944788812354, 1)  (944.1590890003629, 0);
+	TERM normal_out := (941.7944788812354, 0)  (944.1590890003629, 1)  (946.6405590646601, 0);
+	TERM high_out := (944.1590890003629, 0)  (946.6405590646601, 1)  (948.858224699431, 0);
+	TERM very_high_out := (946.6405590646601, 0)  (948.858224699431, 1)  (951.075890334202, 0);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+FUZZIFY cloudiness_in
+	TERM Sunny_in := (1.3434911585899711, 0)  (1.522178576756264, 1)  (1.7008659949225566, 0);
+	TERM Fair_in := (1.522178576756264, 0)  (1.7008659949225566, 1)  (2.038802632094527, 0);
+	TERM Mostly_Sunny_in := (1.7008659949225566, 0)  (2.038802632094527, 1)  (2.3868185165252926, 0);
+	TERM Partly_Cloudy_in := (2.038802632094527, 0)  (2.3868185165252926, 1)  (2.8389538827862824, 0);
+	TERM Partly_Sunny_in := (2.3868185165252926, 0)  (2.8389538827862824, 1)  (3.226002741368556, 0);
+	TERM Mostly_Cloudy_in := (2.8389538827862824, 0)  (3.226002741368556, 1)  (3.5662238077974973, 0);
+	TERM Broken_in := (3.226002741368556, 0)  (3.5662238077974973, 1)  (3.8970342384931307, 0);
+	TERM Overcast_in := (3.5662238077974973, 0)  (3.8970342384931307, 1)  (4.227844669188764, 0);
+END_FUZZIFY
+
+DEFUZZIFY cloudiness_out
+	TERM Sunny_out := (1.3434911585899711, 0)  (1.522178576756264, 1)  (1.7008659949225566, 0);
+	TERM Fair_out := (1.522178576756264, 0)  (1.7008659949225566, 1)  (2.038802632094527, 0);
+	TERM Mostly_Sunny_out := (1.7008659949225566, 0)  (2.038802632094527, 1)  (2.3868185165252926, 0);
+	TERM Partly_Cloudy_out := (2.038802632094527, 0)  (2.3868185165252926, 1)  (2.8389538827862824, 0);
+	TERM Partly_Sunny_out := (2.3868185165252926, 0)  (2.8389538827862824, 1)  (3.226002741368556, 0);
+	TERM Mostly_Cloudy_out := (2.8389538827862824, 0)  (3.226002741368556, 1)  (3.5662238077974973, 0);
+	TERM Broken_out := (3.226002741368556, 0)  (3.5662238077974973, 1)  (3.8970342384931307, 0);
+	TERM Overcast_out := (3.5662238077974973, 0)  (3.8970342384931307, 1)  (4.227844669188764, 0);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+FUZZIFY rainfall_in
+	TERM nearly_dry_in := (2.9507406661146636, 0)  (3.5849421568102624, 1)  (4.219143647505861, 0);
+	TERM very_low_in := (3.5849421568102624, 0)  (4.219143647505861, 1)  (4.779694350977932, 0);
+	TERM low_in := (4.219143647505861, 0)  (4.779694350977932, 1)  (5.437666464802244, 0);
+	TERM normal_in := (4.779694350977932, 0)  (5.437666464802244, 1)  (6.115812625729762, 0);
+	TERM high_in := (5.437666464802244, 0)  (6.115812625729762, 1)  (6.832762526829187, 0);
+	TERM very_high_in := (6.115812625729762, 0)  (6.832762526829187, 1)  (7.549466748983514, 0);
+	TERM overmuch_in := (6.832762526829187, 0)  (7.549466748983514, 1)  (8.532754687704557, 0);
+	TERM flood_in := (7.549466748983514, 0)  (8.532754687704557, 1)  (9.5160426264256, 0);
+END_FUZZIFY
+
+DEFUZZIFY rainfall_out
+	TERM nearly_dry_out := (2.9507406661146636, 0)  (3.5849421568102624, 1)  (4.219143647505861, 0);
+	TERM very_low_out := (3.5849421568102624, 0)  (4.219143647505861, 1)  (4.779694350977932, 0);
+	TERM low_out := (4.219143647505861, 0)  (4.779694350977932, 1)  (5.437666464802244, 0);
+	TERM normal_out := (4.779694350977932, 0)  (5.437666464802244, 1)  (6.115812625729762, 0);
+	TERM high_out := (5.437666464802244, 0)  (6.115812625729762, 1)  (6.832762526829187, 0);
+	TERM very_high_out := (6.115812625729762, 0)  (6.832762526829187, 1)  (7.549466748983514, 0);
+	TERM overmuch_out := (6.832762526829187, 0)  (7.549466748983514, 1)  (8.532754687704557, 0);
+	TERM flood_out := (7.549466748983514, 0)  (8.532754687704557, 1)  (9.5160426264256, 0);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+FUZZIFY relative_humidity_in
+	TERM nearly_dry_in := (51.21804098656328, 0)  (53.24116664058695, 1)  (55.26429229461061, 0);
+	TERM very_low_in := (53.24116664058695, 0)  (55.26429229461061, 1)  (58.231850973824855, 0);
+	TERM low_in := (55.26429229461061, 0)  (58.231850973824855, 1)  (61.78759082524115, 0);
+	TERM normal_in := (58.231850973824855, 0)  (61.78759082524115, 1)  (65.01871425640755, 0);
+	TERM high_in := (61.78759082524115, 0)  (65.01871425640755, 1)  (68.55382802834019, 0);
+	TERM very_high_in := (65.01871425640755, 0)  (68.55382802834019, 1)  (71.8245579724963, 0);
+	TERM overmuch_in := (68.55382802834019, 0)  (71.8245579724963, 1)  (74.7540176281434, 0);
+	TERM flood_in := (71.8245579724963, 0)  (74.7540176281434, 1)  (77.68347728379051, 0);
+END_FUZZIFY
+
+DEFUZZIFY relative_humidity_out
+	TERM nearly_dry_out := (51.21804098656328, 0)  (53.24116664058695, 1)  (55.26429229461061, 0);
+	TERM very_low_out := (53.24116664058695, 0)  (55.26429229461061, 1)  (58.231850973824855, 0);
+	TERM low_out := (55.26429229461061, 0)  (58.231850973824855, 1)  (61.78759082524115, 0);
+	TERM normal_out := (58.231850973824855, 0)  (61.78759082524115, 1)  (65.01871425640755, 0);
+	TERM high_out := (61.78759082524115, 0)  (65.01871425640755, 1)  (68.55382802834019, 0);
+	TERM very_high_out := (65.01871425640755, 0)  (68.55382802834019, 1)  (71.8245579724963, 0);
+	TERM overmuch_out := (68.55382802834019, 0)  (71.8245579724963, 1)  (74.7540176281434, 0);
+	TERM flood_out := (71.8245579724963, 0)  (74.7540176281434, 1)  (77.68347728379051, 0);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+FUZZIFY sunshine_hour_in
+	TERM dark_in := (2.2645868902794266, 0)  (3.180938898307308, 1)  (4.097290906335189, 0);
+	TERM nearly_dark_in := (3.180938898307308, 0)  (4.097290906335189, 1)  (5.03536583691359, 0);
+	TERM low_in := (4.097290906335189, 0)  (5.03536583691359, 1)  (6.119764816728073, 0);
+	TERM normal_in := (5.03536583691359, 0)  (6.119764816728073, 1)  (7.484592029304847, 0);
+	TERM high_in := (6.119764816728073, 0)  (7.484592029304847, 1)  (8.660692135594402, 0);
+	TERM very_high_in := (7.484592029304847, 0)  (8.660692135594402, 1)  (9.732877451647544, 0);
+	TERM overmuch_in := (8.660692135594402, 0)  (9.732877451647544, 1)  (10.27325949725194, 0);
+	TERM luminous_in := (9.732877451647544, 0)  (10.27325949725194, 1)  (10.813641542856336, 0);
+END_FUZZIFY
+
+DEFUZZIFY sunshine_hour_out
+	TERM dark_out := (2.2645868902794266, 0)  (3.180938898307308, 1)  (4.097290906335189, 0);
+	TERM nearly_dark_out := (3.180938898307308, 0)  (4.097290906335189, 1)  (5.03536583691359, 0);
+	TERM low_out := (4.097290906335189, 0)  (5.03536583691359, 1)  (6.119764816728073, 0);
+	TERM normal_out := (5.03536583691359, 0)  (6.119764816728073, 1)  (7.484592029304847, 0);
+	TERM high_out := (6.119764816728073, 0)  (7.484592029304847, 1)  (8.660692135594402, 0);
+	TERM very_high_out := (7.484592029304847, 0)  (8.660692135594402, 1)  (9.732877451647544, 0);
+	TERM overmuch_out := (8.660692135594402, 0)  (9.732877451647544, 1)  (10.27325949725194, 0);
+	TERM luminous_out := (9.732877451647544, 0)  (10.27325949725194, 1)  (10.813641542856336, 0);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+FUZZIFY temperature_in
+	TERM cold_in := (0.8156700843848936, 0)  (3.6861286922234897, 1)  (6.556587300062086, 0);
+	TERM nearly_cold_in := (3.6861286922234897, 0)  (6.556587300062086, 1)  (9.166985244621873, 0);
+	TERM low_in := (6.556587300062086, 0)  (9.166985244621873, 1)  (12.172959924196942, 0);
+	TERM normal_in := (9.166985244621873, 0)  (12.172959924196942, 1)  (15.87456847542929, 0);
+	TERM high_in := (12.172959924196942, 0)  (15.87456847542929, 1)  (19.04962979706009, 0);
+	TERM hot_in := (15.87456847542929, 0)  (19.04962979706009, 1)  (22.202796375264782, 0);
+	TERM very_hot_in := (19.04962979706009, 0)  (22.202796375264782, 1)  (25.10236376971116, 0);
+	TERM boiling_in := (22.202796375264782, 0)  (25.10236376971116, 1)  (28.00193116415754, 0);
+END_FUZZIFY
+
+DEFUZZIFY temperature_out
+	TERM cold_out := (0.8156700843848936, 0)  (3.6861286922234897, 1)  (6.556587300062086, 0);
+	TERM nearly_cold_out := (3.6861286922234897, 0)  (6.556587300062086, 1)  (9.166985244621873, 0);
+	TERM low_out := (6.556587300062086, 0)  (9.166985244621873, 1)  (12.172959924196942, 0);
+	TERM normal_out := (9.166985244621873, 0)  (12.172959924196942, 1)  (15.87456847542929, 0);
+	TERM high_out := (12.172959924196942, 0)  (15.87456847542929, 1)  (19.04962979706009, 0);
+	TERM hot_out := (15.87456847542929, 0)  (19.04962979706009, 1)  (22.202796375264782, 0);
+	TERM very_hot_out := (19.04962979706009, 0)  (22.202796375264782, 1)  (25.10236376971116, 0);
+	TERM boiling_out := (22.202796375264782, 0)  (25.10236376971116, 1)  (28.00193116415754, 0);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+FUZZIFY vapor_pressure_in
+	TERM very_low_in := (5.077574115143712, 0)  (6.133511003216194, 1)  (7.189447891288676, 0);
+	TERM low_in := (6.133511003216194, 0)  (7.189447891288676, 1)  (8.90134781267861, 0);
+	TERM below_normal_in := (7.189447891288676, 0)  (8.90134781267861, 1)  (10.647718343470583, 0);
+	TERM normal_in := (8.90134781267861, 0)  (10.647718343470583, 1)  (11.951741443152077, 0);
+	TERM above_normal_in := (10.647718343470583, 0)  (11.951741443152077, 1)  (13.539771780074775, 0);
+	TERM high_in := (11.951741443152077, 0)  (13.539771780074775, 1)  (15.18310317111358, 0);
+	TERM very_high_in := (13.539771780074775, 0)  (15.18310317111358, 1)  (16.599120611626915, 0);
+	TERM extreme_in := (15.18310317111358, 0)  (16.599120611626915, 1)  (18.01513805214025, 0);
+END_FUZZIFY
+
+DEFUZZIFY vapor_pressure_out
+	TERM very_low_out := (5.077574115143712, 0)  (6.133511003216194, 1)  (7.189447891288676, 0);
+	TERM low_out := (6.133511003216194, 0)  (7.189447891288676, 1)  (8.90134781267861, 0);
+	TERM below_normal_out := (7.189447891288676, 0)  (8.90134781267861, 1)  (10.647718343470583, 0);
+	TERM normal_out := (8.90134781267861, 0)  (10.647718343470583, 1)  (11.951741443152077, 0);
+	TERM above_normal_out := (10.647718343470583, 0)  (11.951741443152077, 1)  (13.539771780074775, 0);
+	TERM high_out := (11.951741443152077, 0)  (13.539771780074775, 1)  (15.18310317111358, 0);
+	TERM very_high_out := (13.539771780074775, 0)  (15.18310317111358, 1)  (16.599120611626915, 0);
+	TERM extreme_out := (15.18310317111358, 0)  (16.599120611626915, 1)  (18.01513805214025, 0);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+FUZZIFY wind_speed_in
+	TERM very_low_in := (1.599936554964681, 0)  (1.697958610395851, 1)  (1.7959806658270212, 0);
+	TERM low_in := (1.697958610395851, 0)  (1.7959806658270212, 1)  (1.8831927339002936, 0);
+	TERM below_normal_in := (1.7959806658270212, 0)  (1.8831927339002936, 1)  (1.971490669980269, 0);
+	TERM normal_in := (1.8831927339002936, 0)  (1.971490669980269, 1)  (2.069230719705118, 0);
+	TERM above_normal_in := (1.971490669980269, 0)  (2.069230719705118, 1)  (2.1609097252169787, 0);
+	TERM high_in := (2.069230719705118, 0)  (2.1609097252169787, 1)  (2.2518330051564117, 0);
+	TERM very_high_in := (2.1609097252169787, 0)  (2.2518330051564117, 1)  (2.3550829111100513, 0);
+	TERM extreme_in := (2.2518330051564117, 0)  (2.3550829111100513, 1)  (2.458332817063691, 0);
+END_FUZZIFY
+
+DEFUZZIFY wind_speed_out
+	TERM very_low_out := (1.599936554964681, 0)  (1.697958610395851, 1)  (1.7959806658270212, 0);
+	TERM low_out := (1.697958610395851, 0)  (1.7959806658270212, 1)  (1.8831927339002936, 0);
+	TERM below_normal_out := (1.7959806658270212, 0)  (1.8831927339002936, 1)  (1.971490669980269, 0);
+	TERM normal_out := (1.8831927339002936, 0)  (1.971490669980269, 1)  (2.069230719705118, 0);
+	TERM above_normal_out := (1.971490669980269, 0)  (2.069230719705118, 1)  (2.1609097252169787, 0);
+	TERM high_out := (2.069230719705118, 0)  (2.1609097252169787, 1)  (2.2518330051564117, 0);
+	TERM very_high_out := (2.1609097252169787, 0)  (2.2518330051564117, 1)  (2.3550829111100513, 0);
+	TERM extreme_out := (2.2518330051564117, 0)  (2.3550829111100513, 1)  (2.458332817063691, 0);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+RULEBLOCK No1
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 1 : IF relative_humidity_in IS high_in AND vapor_pressure_in IS below_normal_in THEN sunshine_hour_out IS normal_out;
+END_RULEBLOCK
+
+RULEBLOCK No3
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 3 : IF temperature_in IS cold_in AND wind_speed_in IS below_normal_in THEN relative_humidity_out IS flood_out;
+END_RULEBLOCK
+
+RULEBLOCK No5
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 5 : IF relative_humidity_in IS overmuch_in AND sunshine_hour_in IS nearly_dark_in AND vapor_pressure_in IS very_low_in THEN actual_pressure_out IS high_out;
+END_RULEBLOCK
+
+RULEBLOCK No7
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 7 : IF temperature_in IS nearly_cold_in AND vapor_pressure_in IS low_in THEN cloudiness_out IS Broken_out;
+END_RULEBLOCK
+
+RULEBLOCK No9
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 9 : IF cloudiness_in IS Sunny_in AND temperature_in IS boiling_in THEN sunshine_hour_out IS overmuch_out;
+END_RULEBLOCK
+
+RULEBLOCK No11
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 11 : IF temperature_in IS very_hot_in THEN vapor_pressure_out IS very_high_out;
+END_RULEBLOCK
+
+RULEBLOCK No13
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 13 : IF actual_pressure_in IS normal_in AND temperature_in IS high_in THEN cloudiness_out IS Mostly_Cloudy_out;
+	RULE 14 : IF actual_pressure_in IS normal_in AND temperature_in IS high_in THEN sunshine_hour_out IS high_out;
+END_RULEBLOCK
+
+RULEBLOCK No17
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 17 : IF actual_pressure_in IS high_in AND vapor_pressure_in IS very_low_in THEN cloudiness_out IS Overcast_out;
+END_RULEBLOCK
+
+RULEBLOCK No19
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 19 : IF actual_pressure_in IS very_high_in AND sunshine_hour_in IS low_in THEN relative_humidity_out IS very_high_out;
+END_RULEBLOCK
+
+RULEBLOCK No21
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 21 : IF actual_pressure_in IS very_high_in AND cloudiness_in IS Overcast_in AND vapor_pressure_in IS very_low_in THEN sunshine_hour_out IS dark_out;
+END_RULEBLOCK
+
+RULEBLOCK No23
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 23 : IF temperature_in IS very_hot_in THEN relative_humidity_out IS very_low_out;
+END_RULEBLOCK
+
+RULEBLOCK No25
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 25 : IF actual_pressure_in IS normal_in AND relative_humidity_in IS high_in AND temperature_in IS normal_in THEN vapor_pressure_out IS below_normal_out;
+END_RULEBLOCK
+
+RULEBLOCK No27
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 27 : IF actual_pressure_in IS very_high_in AND relative_humidity_in IS very_high_in THEN sunshine_hour_out IS low_out;
+END_RULEBLOCK
+
+RULEBLOCK No29
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 29 : IF actual_pressure_in IS normal_in AND sunshine_hour_in IS normal_in THEN relative_humidity_out IS high_out;
+END_RULEBLOCK
+
+RULEBLOCK No31
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 31 : IF actual_pressure_in IS high_in AND relative_humidity_in IS overmuch_in AND vapor_pressure_in IS very_low_in THEN sunshine_hour_out IS nearly_dark_out;
+END_RULEBLOCK
+
+RULEBLOCK No33
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 33 : IF cloudiness_in IS Broken_in AND vapor_pressure_in IS low_in THEN temperature_out IS nearly_cold_out;
+END_RULEBLOCK
+
+RULEBLOCK No35
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 35 : IF actual_pressure_in IS very_high_in AND relative_humidity_in IS flood_in AND temperature_in IS cold_in THEN wind_speed_out IS below_normal_out;
+END_RULEBLOCK
+
+RULEBLOCK No37
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 37 : IF cloudiness_in IS Mostly_Cloudy_in AND relative_humidity_in IS high_in THEN actual_pressure_out IS normal_out;
+END_RULEBLOCK
+
+RULEBLOCK No39
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 39 : IF actual_pressure_in IS normal_in AND cloudiness_in IS Mostly_Cloudy_in AND temperature_in IS high_in THEN sunshine_hour_out IS high_out;
+END_RULEBLOCK
+
+RULEBLOCK No41
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 41 : IF actual_pressure_in IS normal_in AND relative_humidity_in IS normal_in THEN temperature_out IS hot_out;
+END_RULEBLOCK
+
+RULEBLOCK No43
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 43 : IF actual_pressure_in IS normal_in AND cloudiness_in IS Mostly_Cloudy_in AND sunshine_hour_in IS high_in THEN temperature_out IS high_out;
+END_RULEBLOCK
+
+RULEBLOCK No45
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 45 : IF actual_pressure_in IS low_in AND sunshine_hour_in IS overmuch_in AND temperature_in IS boiling_in THEN vapor_pressure_out IS extreme_out;
+END_RULEBLOCK
+
+RULEBLOCK No47
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 47 : IF cloudiness_in IS Broken_in AND temperature_in IS nearly_cold_in THEN vapor_pressure_out IS low_out;
+END_RULEBLOCK
+
+RULEBLOCK No49
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 49 : IF relative_humidity_in IS very_low_in THEN temperature_out IS very_hot_out;
+END_RULEBLOCK
+
+RULEBLOCK No51
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 51 : IF sunshine_hour_in IS very_high_in THEN vapor_pressure_out IS high_out;
+END_RULEBLOCK
+
+RULEBLOCK No53
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 53 : IF actual_pressure_in IS normal_in AND relative_humidity_in IS high_in AND vapor_pressure_in IS below_normal_in THEN temperature_out IS normal_out;
+END_RULEBLOCK
+
+RULEBLOCK No55
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 55 : IF cloudiness_in IS Sunny_in AND sunshine_hour_in IS luminous_in AND wind_speed_in IS extreme_in THEN actual_pressure_out IS low_out;
+	RULE 56 : IF cloudiness_in IS Sunny_in AND sunshine_hour_in IS luminous_in AND wind_speed_in IS extreme_in THEN relative_humidity_out IS nearly_dry_out;
+	RULE 58 : IF cloudiness_in IS Sunny_in AND sunshine_hour_in IS luminous_in AND wind_speed_in IS extreme_in THEN temperature_out IS boiling_out;
+END_RULEBLOCK
+
+RULEBLOCK No62
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 62 : IF temperature_in IS high_in THEN vapor_pressure_out IS normal_out;
+END_RULEBLOCK
+
+RULEBLOCK No64
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 64 : IF actual_pressure_in IS very_high_in AND cloudiness_in IS Overcast_in AND relative_humidity_in IS flood_in THEN temperature_out IS cold_out;
+END_RULEBLOCK
+
+RULEBLOCK No66
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 66 : IF cloudiness_in IS Broken_in AND sunshine_hour_in IS dark_in AND vapor_pressure_in IS very_low_in THEN actual_pressure_out IS very_high_out;
+	RULE 67 : IF cloudiness_in IS Broken_in AND sunshine_hour_in IS dark_in AND vapor_pressure_in IS very_low_in THEN temperature_out IS cold_out;
+END_RULEBLOCK
+
+RULEBLOCK No70
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 70 : IF actual_pressure_in IS low_in AND sunshine_hour_in IS luminous_in AND vapor_pressure_in IS extreme_in AND wind_speed_in IS extreme_in THEN temperature_out IS boiling_out;
+END_RULEBLOCK
+
+RULEBLOCK No72
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 72 : IF actual_pressure_in IS normal_in AND temperature_in IS hot_in THEN relative_humidity_out IS normal_out;
+END_RULEBLOCK
+
+RULEBLOCK No74
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 74 : IF actual_pressure_in IS low_in AND cloudiness_in IS Sunny_in AND relative_humidity_in IS nearly_dry_in AND wind_speed_in IS extreme_in THEN sunshine_hour_out IS luminous_out;
+	RULE 75 : IF actual_pressure_in IS low_in AND cloudiness_in IS Sunny_in AND relative_humidity_in IS nearly_dry_in AND wind_speed_in IS extreme_in THEN temperature_out IS boiling_out;
+END_RULEBLOCK
+
+RULEBLOCK No78
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 78 : IF relative_humidity_in IS normal_in THEN cloudiness_out IS Partly_Sunny_out;
+END_RULEBLOCK
+
+RULEBLOCK No80
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 80 : IF actual_pressure_in IS high_in AND sunshine_hour_in IS nearly_dark_in AND vapor_pressure_in IS very_low_in THEN relative_humidity_out IS overmuch_out;
+END_RULEBLOCK
+
+RULEBLOCK No82
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 82 : IF actual_pressure_in IS normal_in AND relative_humidity_in IS normal_in THEN wind_speed_out IS above_normal_out;
+END_RULEBLOCK
+
+RULEBLOCK No84
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 84 : IF sunshine_hour_in IS luminous_in AND temperature_in IS boiling_in AND vapor_pressure_in IS extreme_in THEN actual_pressure_out IS low_out;
+	RULE 85 : IF sunshine_hour_in IS luminous_in AND temperature_in IS boiling_in AND vapor_pressure_in IS extreme_in THEN relative_humidity_out IS nearly_dry_out;
+	RULE 87 : IF sunshine_hour_in IS luminous_in AND temperature_in IS boiling_in AND vapor_pressure_in IS extreme_in THEN wind_speed_out IS extreme_out;
+END_RULEBLOCK
+
+RULEBLOCK No91
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 91 : IF actual_pressure_in IS normal_in AND vapor_pressure_in IS high_in THEN sunshine_hour_out IS very_high_out;
+END_RULEBLOCK
+
+RULEBLOCK No93
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 93 : IF relative_humidity_in IS nearly_dry_in AND vapor_pressure_in IS extreme_in THEN actual_pressure_out IS low_out;
+END_RULEBLOCK
+
+RULEBLOCK No95
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 95 : IF actual_pressure_in IS high_in AND relative_humidity_in IS overmuch_in AND sunshine_hour_in IS nearly_dark_in THEN vapor_pressure_out IS very_low_out;
+END_RULEBLOCK
+
+RULEBLOCK No97
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 97 : IF sunshine_hour_in IS overmuch_in AND temperature_in IS boiling_in THEN cloudiness_out IS Sunny_out;
+END_RULEBLOCK
+
+RULEBLOCK No99
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 99 : IF actual_pressure_in IS normal_in AND relative_humidity_in IS high_in THEN rainfall_out IS very_low_out;
+END_RULEBLOCK
+
+
+END_FUNCTION_BLOCK

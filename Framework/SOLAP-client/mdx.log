@@ -1,0 +1,6 @@
+2018-12-27 17:20:08,237 DEBUG [mondrian.mdx] 0: select {[Measures].[Tempature_avg], [Measures].[actual_pressure_avg], [Measures].[relative_humidity_avg]} ON COLUMNS,
+  Filter({[Station.StationHierarchy].[Station City].Members}, ST_Within([Station].CurrentMember.Properties("geom"), [Station.StationHierarchy].[All Stations].[MARMARA REGION].Properties("geom"))) ON ROWS
+from [MeteorologicalCube]
+where [DateDimension1.Date Hierarchy 0].[All Dates].[2016]
+
+2018-12-27 17:20:13,922 DEBUG [mondrian.mdx] 0: exec: 5685 ms
